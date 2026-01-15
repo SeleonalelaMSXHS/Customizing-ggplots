@@ -1,10 +1,7 @@
 ---
 title: "Activity 4: Data visualization 2: Customizing plots"
-subtitle: Jan. 14th, 2026, Calvin Munson
-format: markdown_github
-
-execute:
-  warning: false
+subtitle: Jan. 14th, 2026, Jake and Seleona
+format: "pdf"
 ---
 
 # Overview
@@ -13,11 +10,11 @@ Welcome! Today's activity is all about the basics of customizing plots. We will 
 
 You will submit two outputs for this activity:
 
-1. A **PDF** of a rendered Quarto document with all of your R code (see below). Please include all of the code that appears in this document, in addition to adding your own code in the "Q#" sections.
+1.  A **PDF** of a rendered Quarto document with all of your R code (see below). Please include all of the code that appears in this document, in addition to adding your own code in the "Q#" sections.
 
 *If you have trouble submitting as a PDF, please ask Calvin or Malin for help. If we still can't solve it, you can submit the .qmd file instead.*
 
-2. A plot and research question from the final section
+2.  A plot and research question from the final section
 
 A note about submitting code:
 
@@ -29,18 +26,18 @@ Also, don’t be afraid to use lots of blank lines! It is MUCH nicer for your fu
 
 # 1) Penguins!
 
-![Gentoo penguin](gentoo.jpg)
+
 
 ## Setting up
 
 First, let's load our packages. You should already have the `here` and `ggplot2` packages installed; read them in from the library in your code. Also install and read in the `palmerpenguins` package, which contains built-in data - you may recognize this from Malin's ggplot lecture!
 
 ```{r setup, warning = FALSE, message = FALSE}
-# install.packages("palmerpenguins")
+# install.packages("palmerpenguins") in console
 library(ggplot2)
 library(here)
 library(palmerpenguins)
-
+library(dplyr)
 
 ```
 
@@ -71,6 +68,7 @@ ggplot(data = penguins, aes(x = bill_length_mm, y = bill_depth_mm)) +
 
 ### Q1.1: Do you see a relationship?
 
+#### Q1.1 Answer: No. There may be 3 separate clusters, but there does not seem to be any clear relationship between the variables. 
 Does it look like there is a relationship between these variables? Describe the relationship.
 
 ------------------------------------------------------------------------
@@ -86,8 +84,11 @@ To address the second part of our question:
 2.  Interpret the graph by describing the relationship you see and if this new visualization changes your answer to Q1.1.
 
 ```{r}
-
+ggplot(data = penguins, aes(x = bill_length_mm, y = bill_depth_mm, color=species)) +
+  geom_point()
 ```
+
+#### Yes, there is a relationship betweeen variables within individual species.
 
 The take-home message here is to be thorough with how you look at your data! If you ignore certain variables, you might miss important patterns (this is also crucial when deciding what statistical models we should run on our data, but more on that in a few weeks!).
 
@@ -108,7 +109,7 @@ Using your new color skills, modify the `scale_color_*` code below to include a 
 ```{r}
 ggplot(data = penguins, aes(x = bill_length_mm, y = bill_depth_mm)) +
   geom_point(aes(color = species)) +
-  scale_color_brewer(palette = "Dark2")
+  scale_color_brewer(palette = "Set2")
 ```
 
 Let's make the shape of the points vary by species to even more clearly separate the points by species:
@@ -119,7 +120,7 @@ Let's make the shape of the points vary by species to even more clearly separate
 ggplot(data = penguins, aes(x = bill_length_mm, y = bill_depth_mm)) +
   geom_point(aes(color = species,
                  shape = species)) +
-  scale_color_brewer(palette = "Dark2")
+  scale_color_brewer(palette = "Set2")
 ```
 
 If we want to manually change the shapes that ggplot supplies, we use `scale_shape_manual()`:
@@ -128,7 +129,7 @@ If we want to manually change the shapes that ggplot supplies, we use `scale_sha
 ggplot(data = penguins, aes(x = bill_length_mm, y = bill_depth_mm)) +
   geom_point(aes(color = species,
                  shape = species)) +
-  scale_color_brewer(palette = "Dark2") +
+  scale_color_brewer(palette = "Set2") +
   scale_shape_manual(values = c(8, 11, 14))
 ```
 
@@ -138,7 +139,7 @@ I personally like using shapes that have a black outline and are filled with the
 ggplot(data = penguins, aes(x = bill_length_mm, y = bill_depth_mm)) +
   geom_point(aes(color = species,
                  shape = species)) +
-  scale_color_brewer(palette = "Dark2") +
+  scale_color_brewer(palette = "Set2") +
   scale_shape_manual(values = c(21, 22, 24))
 ```
 
@@ -150,7 +151,7 @@ To make this switch, we are going to change the `color = species` aesthetic to `
 ggplot(data = penguins, aes(x = bill_length_mm, y = bill_depth_mm)) +
   geom_point(aes(fill = species,
                  shape = species)) +
-  scale_fill_brewer(palette = "Dark2") +
+  scale_fill_brewer(palette = "Set2") +
   scale_shape_manual(values = c(21, 22, 24))
 ```
 
@@ -161,7 +162,7 @@ ggplot(data = penguins, aes(x = bill_length_mm, y = bill_depth_mm)) +
   geom_point(aes(fill = species,
                  shape = species),
              size = 2.5) +
-  scale_fill_brewer(palette = "Dark2") +
+  scale_fill_brewer(palette = "Set2") +
   scale_shape_manual(values = c(21, 22, 24))
 ```
 
@@ -173,7 +174,7 @@ ggplot(data = penguins, aes(x = bill_length_mm, y = bill_depth_mm)) +
                  shape = species),
              size = 2.5) +
   geom_smooth(method = "lm") +
-  scale_fill_brewer(palette = "Dark2") +
+  scale_fill_brewer(palette = "Set2") +
   scale_shape_manual(values = c(21, 22, 24))
 ```
 
@@ -186,7 +187,7 @@ ggplot(data = penguins, aes(x = bill_length_mm, y = bill_depth_mm)) +
              size = 2.5) +
   geom_smooth(method = "lm",
               aes(color = species)) +
-  scale_fill_brewer(palette = "Dark2") +
+  scale_fill_brewer(palette = "Set2") +
   scale_shape_manual(values = c(21, 22, 24))
 ```
 
@@ -199,8 +200,8 @@ ggplot(data = penguins, aes(x = bill_length_mm, y = bill_depth_mm)) +
              size = 2.5) +
   geom_smooth(method = "lm",
               aes(color = species)) +
-  scale_fill_brewer(palette = "Dark2") +
-  scale_color_brewer(palette = "Dark2") +
+  scale_fill_brewer(palette = "Set2") +
+  scale_color_brewer(palette = "Set2") +
   scale_shape_manual(values = c(21, 22, 24))
 ```
 
@@ -220,8 +221,8 @@ ggplot(data = penguins, aes(x = bill_length_mm, y = bill_depth_mm)) +
              size = 2.5) +
   geom_smooth(method = "lm",
               aes(color = species)) +
-  scale_fill_brewer(palette = "Dark2") +
-  scale_color_brewer(palette = "Dark2") +
+  scale_fill_brewer(palette = "Set2") +
+  scale_color_brewer(palette = "Set2") +
   scale_shape_manual(values = c(21, 22, 24)) +
   scale_y_continuous(limits = c(0, 30))
 ```
@@ -231,7 +232,16 @@ ggplot(data = penguins, aes(x = bill_length_mm, y = bill_depth_mm)) +
 Let's say we want our limits to include 0, so we manually specify 0 as the minimum, but we want to use ggplot's default for the maximum y limit. Go to the built-in help page of `scale_y_continuous()` and figure out what to replace the \* with in `limits = c(0, *)`. Then modify that code below.
 
 ```{r}
-?scale_y_continuous()
+ggplot(data = penguins, aes(x = bill_length_mm, y = bill_depth_mm)) +
+  geom_point(aes(fill = species,
+                 shape = species),
+             size = 2.5) +
+  geom_smooth(method = "lm",
+              aes(color = species)) +
+  scale_fill_brewer(palette = "Set2") +
+  scale_color_brewer(palette = "Set2") +
+  scale_shape_manual(values = c(21, 22, 24)) +
+  scale_y_continuous(limits = c(0, NA))
 ```
 
 ------------------------------------------------------------------------
@@ -247,8 +257,8 @@ ggplot(data = penguins, aes(x = bill_length_mm, y = bill_depth_mm)) +
              size = 2.5) +
   geom_smooth(method = "lm",
               aes(color = species)) +
-  scale_fill_brewer(palette = "Dark2") +
-  scale_color_brewer(palette = "Dark2") +
+  scale_fill_brewer(palette = "Set2") +
+  scale_color_brewer(palette = "Set2") +
   scale_shape_manual(values = c(21, 22, 24)) +
   scale_y_log10()
 
@@ -262,17 +272,21 @@ Let's backtrack a little bit to the graph before we started messing with the y-a
 To change this, we use the `labs()` function, which allows us to rename whatever `aes()` elements we have specified. We do this with the format `x = "New x axis title"` and/or `fill = "New legend title for the fill"`. Let's change the x and y axis titles:
 
 ```{r}
+get_labs()
+# get_labs() shows you what labels are using what variable. 
+
 ggplot(data = penguins, aes(x = bill_length_mm, y = bill_depth_mm)) +
   geom_point(aes(fill = species,
                  shape = species),
              size = 2.5) +
   geom_smooth(method = "lm",
               aes(color = species)) +
-  scale_fill_brewer(palette = "Dark2") +
-  scale_color_brewer(palette = "Dark2") +
+  scale_fill_brewer(palette = "Set2") +
+  scale_color_brewer(palette = "Set2") +
   scale_shape_manual(values = c(21, 22, 24)) +
   labs(x = "Bill length (mm)",
-       y = "Bill depth (mm)")
+       y = "Bill depth (mm)",
+       fill = "Species", colour ="Species", shape = "Species")
 
 ```
 
@@ -299,8 +313,8 @@ ggplot(data = penguins, aes(x = bill_length_mm, y = bill_depth_mm)) +
              size = 2.5) +
   geom_smooth(method = "lm",
               aes(color = species)) +
-  scale_fill_brewer(palette = "Dark2") +
-  scale_color_brewer(palette = "Dark2") +
+  scale_fill_brewer(palette = "Set2") +
+  scale_color_brewer(palette = "Set2") +
   scale_shape_manual(values = c(21, 22, 24)) +
   labs(x = "Bill length (mm)",
        y = "Bill depth (mm)", 
@@ -324,10 +338,12 @@ Depending on what the element is, you use a different `element_*()` function:
 
 ### Q1.6: What font faces are available?
 
+
 Go to the `element_text()` help page: under "Usage" you will see what arguments each element function can modify, and if you scroll down to "Arguments," you can read more about the specifics of each element you can modify.
 
 What are the four options for the "face" of the text?
 
+#### Q1.6 Answer: Options include plain, italic, bold, and bold.italic
 ------------------------------------------------------------------------
 
 Modifying ALL THAT from scratch can be overwhelming! Thankfully, R has a handful of built-in, pre-curated themes that you can choose from. Add on a new line to this graph and start typing `theme_` - note how multiple options pop up! Let's click on and add `theme_classic()`.
@@ -339,8 +355,8 @@ ggplot(data = penguins, aes(x = bill_length_mm, y = bill_depth_mm)) +
              size = 2.5) +
   geom_smooth(method = "lm",
               aes(color = species)) +
-  scale_fill_brewer(palette = "Dark2") +
-  scale_color_brewer(palette = "Dark2") +
+  scale_fill_brewer(palette = "Set2") +
+  scale_color_brewer(palette = "Set2") +
   scale_shape_manual(values = c(21, 22, 24)) +
   labs(x = "Bill length (mm)",
        y = "Bill depth (mm)", 
@@ -375,8 +391,8 @@ ggplot(data = penguins, aes(x = bill_length_mm, y = bill_depth_mm)) +
   geom_smooth(aes(color = species),
               method = "lm") +
   # Customize the fill and color of the geoms
-  scale_fill_brewer(palette = "Dark2") +
-  scale_color_brewer(palette = "Dark2") +
+  scale_fill_brewer(palette = "Set2") +
+  scale_color_brewer(palette = "Set2") +
   # Manually select the shape of the points
   scale_shape_manual(values = c(21, 22, 24)) +
   # Make nicer axis and legend titles based on the aes() specified above
@@ -426,8 +442,8 @@ ggplot(data = penguins, aes(x = species, y = body_mass_g)) +
              alpha = 0.75
              ) +
   # Customize the fill and color of the geoms
-  scale_fill_brewer(palette = "Dark2") +
-  scale_color_brewer(palette = "Dark2") +
+  scale_fill_brewer(palette = "Set2") +
+  scale_color_brewer(palette = "Set2") +
   # Manually select the shape of the points
   scale_shape_manual(values = c(21, 22, 24)) +
   # Make nicer axis and legend titles based on the aes() specified above
@@ -455,14 +471,14 @@ ggplot(data = penguins, aes(x = species, y = body_mass_g)) +
 
 # 2) Make your abalone figure ready for prime time!
 
-![Black abalone](blackabalone.jpg)
 
-Next, it's time to practice what you've learned! 
+Next, it's time to practice what you've learned!
 
 Please take a look at the feedback you got on the abalone figure (go back to the [Google slides](https://docs.google.com/presentation/d/1wAGmbArAW2YKmufrBbzCQ3BcDdwDknzgoRHYEmFXJko/edit?usp=sharing), which now have the comments pasted in the speaker notes). Decide which aspects of the feedback you find useful, combined with your own thoughts on how to make the figure more effective as an explanatory graph.
 
 ### Q2.1: Pick an audience for your explanatory graph.
 
+#### Our audience will be the general public.
 This could be everything from another scientist to a policymaker, a community member, your grandmother, or anyone else. Please write a short explanation of who this person or group of people is.
 
 ------------------------------------------------------------------------
@@ -471,22 +487,71 @@ This could be everything from another scientist to a policymaker, a community me
 
 This should be as simple as copy and pasting the code you used on Monday (though remember to read in the data!). You'll need to create a new code block below here (remember how to do that?).
 
+```{r}
+abalone <- read.csv("abalone_landings.csv")%>%
+mutate(Abalone_Species = if_else(Abalone_Species == "While", "White", Abalone_Species))
+```
+
+```{r}
+ggplot(data = abalone, aes(x = Year, y = Abalone_Landings_lbs, color = Abalone_Species)) +
+  geom_smooth() +
+  facet_wrap(Abalone_Species ~ .,scales="free_y") +
+  scale_color_manual(values = c(
+    "Red" = "firebrick",
+    "Green" = "darkgreen",
+    "Pink" = "deeppink",
+    "Black" = "black",
+    "White" = "grey"
+  )) +
+  scale_y_continuous(limits=c(0,NA))+
+  theme_classic()
+
+```
+
+```{r}
+ggsave("abalone_landings_by_species.png",
+       width = 8,
+       height = 6,
+       units = "in",
+       dpi = 300)
+```
+
+
 ------------------------------------------------------------------------
 
 ### Q2.3: Describe how you would like to modify the figure to make it more effective as an explanatory graph for the audience you chose in Q2.1.
 
+#### We would like to change the y-axis into single digit numbers and/or text. And remove "_" from legend title.
 The past two activities have provided a brief sampling of the possibilities of customizing graphs using ggplot. You are welcome to explore other possibilities, too, either on your own or by talking with the teaching team.
-
 
 ------------------------------------------------------------------------
 
 ### Q2.4 Make the explanatory graph!
 
-Use what you have learned and make a Really Nice Graph for your audience! Go wild with making it pretty.
+```{r}
+ggplot(data = abalone, aes(x = Year, y = Abalone_Landings_lbs, color = Abalone_Species)) +
+  geom_smooth() +
+  facet_wrap(Abalone_Species ~ .,scales="free_y") +
+  scale_color_manual(values = c(
+    "Red" = "firebrick",
+    "Green" = "darkgreen",
+    "Pink" = "deeppink",
+    "Black" = "black",
+    "White" = "grey"
+  )) +
+  scale_y_continuous(limits=c(0,NA))+
+  theme_classic()+
+  labs(
+    colour="Abalone Species",
+    y="Abalone Landings"
+  )
+```
 
+Use what you have learned and make a Really Nice Graph for your audience! Go wild with making it pretty.
 
 ### Q2.5: Explain your graph
 
+#### All species except for red Abalone have declined to 0 landings by the end of the studies duration periond.
 Write a couple sentences explaining the message you hope your audience will take away from seeing your graph.
 
 # Wrap up and submit
